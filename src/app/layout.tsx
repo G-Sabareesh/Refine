@@ -1,5 +1,9 @@
 import { DevtoolsProvider } from "@providers/devtools";
-import { useNotificationProvider } from "@refinedev/antd";
+import {
+  ThemedHeaderV2,
+  ThemedLayoutV2,
+  useNotificationProvider,
+} from "@refinedev/antd";
 import { GitHubBanner, Refine } from "@refinedev/core";
 import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
 import routerProvider from "@refinedev/nextjs-router";
@@ -12,6 +16,9 @@ import { ColorModeContextProvider } from "@contexts/color-mode";
 import { authProvider } from "@providers/auth-provider";
 import { dataProvider } from "@providers/data-provider";
 import "@refinedev/antd/dist/reset.css";
+import { ConfigProvider } from "antd";
+
+import { Poppins } from "@next/font/google";
 
 export const metadata: Metadata = {
   title: "Refine",
@@ -20,6 +27,11 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
 };
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["100", "200", "300"],
+});
 
 export default function RootLayout({
   children,
@@ -32,13 +44,27 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body>
+      <head></head>
+      <body
+        // style={{ backgroundColor: "red !important" }}
+      >
         <Suspense>
-          <GitHubBanner />
+          {/* <GitHubBanner /> */}
           <RefineKbarProvider>
             <AntdRegistry>
               <ColorModeContextProvider defaultMode={defaultMode}>
-                <DevtoolsProvider>
+                {/* <DevtoolsProvider> */}
+                <ConfigProvider
+                  theme={{
+                    components: {
+                      Typography: {
+                      },
+                    },
+                    token: {
+                      fontFamily: "Poppins",
+                    },
+                  }}
+                >
                   <Refine
                     routerProvider={routerProvider}
                     dataProvider={dataProvider}
@@ -76,7 +102,8 @@ export default function RootLayout({
                     {children}
                     <RefineKbar />
                   </Refine>
-                </DevtoolsProvider>
+                </ConfigProvider>
+                {/* </DevtoolsProvider> */}
               </ColorModeContextProvider>
             </AntdRegistry>
           </RefineKbarProvider>
